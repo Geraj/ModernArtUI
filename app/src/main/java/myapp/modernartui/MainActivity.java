@@ -3,7 +3,6 @@ package myapp.modernartui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
@@ -14,20 +13,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 
+/**
+ * Main activity
+ */
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
     // Create Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
         return true;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,12 +54,13 @@ public class MainActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                alterColor(findViewById(R.id.one), progress, ResourcesCompat.getColor(getResources(),  R.color.one, null));
-                alterColor(findViewById(R.id.two), progress, ResourcesCompat.getColor(getResources(),  R.color.two, null));
-                alterColor( findViewById(R.id.threea), progress, ResourcesCompat.getColor(getResources(),  R.color.three, null));
-                alterColor(findViewById(R.id.threeb), progress, ResourcesCompat.getColor(getResources(),  R.color.three, null));
-                alterColor(findViewById(R.id.four), progress, ResourcesCompat.getColor(getResources(),  R.color.four, null));
-                alterColor(findViewById(R.id.five), progress, ResourcesCompat.getColor(getResources(),  R.color.five, null));
+                // alter the color of the modifiable color boxes
+                alterColor(findViewById(R.id.one), progress, ResourcesCompat.getColor(getResources(), R.color.one, null));
+                alterColor(findViewById(R.id.two), progress, ResourcesCompat.getColor(getResources(), R.color.two, null));
+                alterColor(findViewById(R.id.threea), progress, ResourcesCompat.getColor(getResources(), R.color.three, null));
+                alterColor(findViewById(R.id.threeb), progress, ResourcesCompat.getColor(getResources(), R.color.three, null));
+                alterColor(findViewById(R.id.four), progress, ResourcesCompat.getColor(getResources(), R.color.four, null));
+                alterColor(findViewById(R.id.five), progress, ResourcesCompat.getColor(getResources(), R.color.five, null));
             }
 
             /**
@@ -80,12 +74,11 @@ public class MainActivity extends AppCompatActivity {
                 int origR = (basecollor >> 16) & 0x000000FF;
                 int origG = (basecollor >> 8) & 0x000000FF;
                 int origB = basecollor & 0x000000FF;
-                view.setBackgroundColor( Color.rgb(
-                        ( int ) (Math.abs( origR +  (alterFactor-50) )),
-                        ( int ) (Math.abs( origG +  (alterFactor-50) )),
-                        ( int ) (Math.abs( origB +  (alterFactor-50) )) ));
-
-//                view.setBackgroundColor();
+                //-50 as the initial progress is at 50 (abs not necessary but looks nicer :) )
+                view.setBackgroundColor(Color.rgb(
+                        (Math.abs(origR + (alterFactor - 50))),
+                        (Math.abs(origG + (alterFactor - 50))),
+                        (Math.abs(origB + (alterFactor - 50)))));
 
             }
 
@@ -100,46 +93,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Main Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
     }
 }
 
