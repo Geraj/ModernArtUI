@@ -1,13 +1,20 @@
 package myapp.modernartui;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -21,7 +28,30 @@ public class MainActivity extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    // Create Options Menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Moma");
+        builder.setMessage("Should we take a look?");
+        builder.setPositiveButton("Visit Moma", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.moma.org/"));
+                startActivity(browserIntent);
+            }
+        });
+        builder.setNegativeButton("Not now", null);
+        builder.show();
+        return true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,19 +61,12 @@ public class MainActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                View one = findViewById(R.id.one);
-                View two = findViewById(R.id.two);
-                View three1 = findViewById(R.id.threea);
-                View three2 = findViewById(R.id.threeb);
-                View four = findViewById(R.id.four);
-                View five = findViewById(R.id.five);
-                alterColor(one, progress, ResourcesCompat.getColor(getResources(),  R.color.one, null));
-                alterColor(two, progress, ResourcesCompat.getColor(getResources(),  R.color.two, null));
-                alterColor(three1, progress, ResourcesCompat.getColor(getResources(),  R.color.three, null));
-                alterColor(three2, progress, ResourcesCompat.getColor(getResources(),  R.color.three, null));
-                alterColor(four, progress, ResourcesCompat.getColor(getResources(),  R.color.four, null));
-                alterColor(five, progress, ResourcesCompat.getColor(getResources(),  R.color.five, null));
-
+                alterColor(findViewById(R.id.one), progress, ResourcesCompat.getColor(getResources(),  R.color.one, null));
+                alterColor(findViewById(R.id.two), progress, ResourcesCompat.getColor(getResources(),  R.color.two, null));
+                alterColor( findViewById(R.id.threea), progress, ResourcesCompat.getColor(getResources(),  R.color.three, null));
+                alterColor(findViewById(R.id.threeb), progress, ResourcesCompat.getColor(getResources(),  R.color.three, null));
+                alterColor(findViewById(R.id.four), progress, ResourcesCompat.getColor(getResources(),  R.color.four, null));
+                alterColor(findViewById(R.id.five), progress, ResourcesCompat.getColor(getResources(),  R.color.five, null));
             }
 
             /**
@@ -64,17 +87,16 @@ public class MainActivity extends AppCompatActivity {
 
 //                view.setBackgroundColor();
 
-
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                //nothing
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                //nothing
             }
         });
 
